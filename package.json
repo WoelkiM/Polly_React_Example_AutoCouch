@@ -1,0 +1,64 @@
+{
+  "name": "poll_app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/register": "^7.7.7",
+    "@types/jasmine": "^3.5.0",
+    "@types/pouchdb": "^6.4.0",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
+    "@types/react-router-dom": "^5.1.0",
+    "@types/uuid": "^3.4.5",
+    "autocouch": "file:../AutoCouch",
+    "automerge": "^0.12.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^9.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "jasmine": "^3.5.0",
+    "jasmine-enzyme": "^7.1.2",
+    "jsdom": "^15.2.1",
+    "pouchdb": "^7.1.1",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.3.0",
+    "tslib": "^1.10.0",
+    "uuid": "^3.3.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start:automerge": "cross-env REACT_APP_CRDT=AUTOMERGE npm start",
+    "start:couchdb": "cross-env REACT_APP_CRDT=COUCH npm start",
+    "build": "react-scripts build",
+    "build:automerge": "cross-env REACT_APP_CRDT=AUTOMERGE npm run build",
+    "build:couchdb": "cross-env REACT_APP_CRDT=COUCH npm run build",
+    "test": "cross-env NODE_ENV=test jasmine",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "typescript": "^3.6.4"
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  }
+}
