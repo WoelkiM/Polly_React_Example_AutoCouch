@@ -12,9 +12,9 @@ import { ROOT_ID } from './constants'
 import { ListCRDT } from './components/crdts/ListCRDT';
 import { OptCRDT } from './components/crdts/OptCRDT';
 import { db, factory, standardCatch } from 'autocouch';
-import AutomergeList from './components/crdts/AutomergeList';
-import { AutomergeOpt, OptType } from './components/crdts/AutomergeOpt';
-import AutomergeWrapper from './components/crdts/AutomergeWrapper'
+import AutoCouchList from './components/crdts/AutoCouchList';
+import { AutoCouchOpt, OptType } from './components/crdts/AutoCouchOpt';
+import AutoCouchWrapper from './components/crdts/AutoCouchWrapper'
 
 
 type AppState = {
@@ -94,8 +94,8 @@ class App extends Component<{}, AppState> {
     };
 
     addOpt = (title: string) => {
-        const newOption = factory.createObject<OptType, AutomergeOpt>(
-            AutomergeOpt.OBJECT_TYPE,
+        const newOption = factory.createObject<OptType, AutoCouchOpt>(
+            AutoCouchOpt.OBJECT_TYPE,
             uuid.v4(),
             title,
             false,
@@ -151,12 +151,12 @@ class App extends Component<{}, AppState> {
 
 function loadRootList(): Promise<ListCRDT<OptCRDT>> {
     return db.get(ROOT_ID).then((object: any) => {
-        return factory.loadObject<String[], AutomergeList<AutomergeOpt>>(object.object);
+        return factory.loadObject<String[], AutoCouchList<AutoCouchOpt>>(object.object);
     });
 }
 
-async function createRoot(): Promise<AutomergeList<AutomergeOpt>> {
-    let list: AutomergeList<AutomergeOpt> = factory.createObject<String[], AutomergeList<AutomergeOpt>>(AutomergeList.OBJECT_TYPE);
+async function createRoot(): Promise<AutoCouchList<AutoCouchOpt>> {
+    let list: AutoCouchList<AutoCouchOpt> = factory.createObject<String[], AutoCouchList<AutoCouchOpt>>(AutoCouchList.OBJECT_TYPE);
     let my_doc = {
         _id: ROOT_ID,
         object: list.getObjectId()
@@ -168,30 +168,30 @@ async function createRoot(): Promise<AutomergeList<AutomergeOpt>> {
 
 function registerTypes(): void {
     factory.registerType(
-        AutomergeOpt.OBJECT_TYPE,
+        AutoCouchOpt.OBJECT_TYPE,
         (id: any, title: string, chosen: boolean, votes: number) => {
-            return new AutomergeOpt(id, title, chosen, votes);
+            return new AutoCouchOpt(id, title, chosen, votes);
         },
         (doc) => {
-            return new AutomergeOpt('', '', true, 0, doc);
+            return new AutoCouchOpt('', '', true, 0, doc);
         }
     );
     factory.registerType(
-        AutomergeList.OBJECT_TYPE,
+        AutoCouchList.OBJECT_TYPE,
         function<T>(...elements: T[]) {
-            return new AutomergeList(undefined, ...elements);
+            return new AutoCouchList(undefined, ...elements);
         },
         (doc) => {
-            return new AutomergeList(doc);
+            return new AutoCouchList(doc);
         }
     );
     factory.registerType(
-        AutomergeWrapper.OBJECT_TYPE,
+        AutoCouchWrapper.OBJECT_TYPE,
         (object: any) => {
-            return new AutomergeWrapper(object);
+            return new AutoCouchWrapper(object);
         },
         (doc) => {
-            return new AutomergeWrapper({}, doc);
+            return new AutoCouchWrapper({}, doc);
         }
     );
 }

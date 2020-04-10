@@ -1,11 +1,10 @@
 import uuid from 'uuid'
 import { ListCRDT } from  './ListCRDT'
-import { AutomergeCRDT } from 'autocouch'
-import { AutomergeWrapper } from './AutomergeWrapper'
-import { registry } from 'autocouch';
+import { AutoCouchCRDT, registry } from 'autocouch'
+import { AutoCouchWrapper } from './AutoCouchWrapper'
 import Automerge from 'automerge'
 
-export class AutomergeList<T> extends AutomergeCRDT<string[]> implements ListCRDT<T> {
+export class AutoCouchList<T> extends AutoCouchCRDT<string[]> implements ListCRDT<T> {
 
     static OBJECT_TYPE: string = 'AutomergeList'
     
@@ -14,7 +13,7 @@ export class AutomergeList<T> extends AutomergeCRDT<string[]> implements ListCRD
             super("", "", [], doc);
             return;
         }
-        super(AutomergeList.OBJECT_TYPE, uuid.v4(), []);
+        super(AutoCouchList.OBJECT_TYPE, uuid.v4(), []);
         elements.forEach(value => {
             this.add(value);
         });
@@ -47,12 +46,12 @@ export class AutomergeList<T> extends AutomergeCRDT<string[]> implements ListCRD
     }
 
     async getPureList(): Promise<T[]> {
-        let promises: Promise<T>[] = await this.getObject().map(id => {
+        let promises: Promise<T>[] = this.getObject().map(async (id: string) => {
             return registry.getObject(id).then(crdt => {
-                if(crdt.getObjectType() === AutomergeWrapper.OBJECT_TYPE) {
-                    return crdt.getObject();
+                if(crdt.getObjectType() === AutoCouchWrapper.OBJECT_TYPE) {
+                    return crdt.getObject() as T;
                 } else {
-                    return crdt;
+                    return crdt as unknown as T;
                 }
             }).catch(reason => {
                 return Promise.reject({
@@ -67,10 +66,10 @@ export class AutomergeList<T> extends AutomergeCRDT<string[]> implements ListCRD
     }
 
     private makeCRDT(element: T): string {
-        if(element instanceof AutomergeCRDT) {
+        if(element instanceof AutoCouchCRDT) {
             return element.getObjectId();
         } else {
-            let crdt = new AutomergeWrapper(element);
+            let crdt = new AutoCouchWrapper(element);
             registry.registerObject(crdt.getObjectId(), crdt);
             return crdt.getObjectId();
         }
@@ -78,7 +77,7 @@ export class AutomergeList<T> extends AutomergeCRDT<string[]> implements ListCRD
 
     private findId(element: T): string | undefined {
         // Does this really work without passing through a promise?
-        if(element instanceof AutomergeCRDT) {
+        if(element instanceof AutoCouchCRDT) {
             return element.getObjectId();
         } else {
             let list = this.getObject().filter(async value => {
@@ -97,4 +96,4 @@ export class AutomergeList<T> extends AutomergeCRDT<string[]> implements ListCRD
     }
 }
 
-export default AutomergeList;
+export default AutoCouchList;

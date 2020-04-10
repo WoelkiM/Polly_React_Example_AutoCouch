@@ -1,11 +1,11 @@
-import { AutomergeCRDT } from "autocouch";
+import { AutoCouchCRDT } from "autocouch";
 import uuid from "uuid";
 
 type TestObject = {
     testFlag: boolean
 }
 
-export class TestCRDT extends AutomergeCRDT<TestObject> {
+export class TestCRDT extends AutoCouchCRDT<TestObject> {
 
     constructor() {
         super("Test", uuid.v4(), {testFlag: false}, undefined)

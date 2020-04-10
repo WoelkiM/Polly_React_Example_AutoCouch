@@ -1,7 +1,7 @@
 import {OptCRDT} from './OptCRDT';
 import Automerge from 'automerge';
 import uuid from 'uuid'
-import { AutomergeCRDT } from 'autocouch';
+import { AutoCouchCRDT } from 'autocouch';
 
 export type OptType = {
     id: any,
@@ -9,7 +9,7 @@ export type OptType = {
     votes: {[username: string]: boolean}
 }
 
-export class AutomergeOpt extends AutomergeCRDT<OptType> implements OptCRDT {
+export class AutoCouchOpt extends AutoCouchCRDT<OptType> implements OptCRDT {
 
     static OBJECT_TYPE: string = 'AutomergeOpt';
 
@@ -24,7 +24,7 @@ export class AutomergeOpt extends AutomergeCRDT<OptType> implements OptCRDT {
             super('', '', opt, doc);
             return;
         }
-        super(AutomergeOpt.OBJECT_TYPE, uuid.v4(), opt);
+        super(AutoCouchOpt.OBJECT_TYPE, uuid.v4(), opt);
     }
 
     getChosen(username: string): boolean {
@@ -59,4 +59,4 @@ export class AutomergeOpt extends AutomergeCRDT<OptType> implements OptCRDT {
     }
 }
 
-export default AutomergeOpt;
+export default AutoCouchOpt;

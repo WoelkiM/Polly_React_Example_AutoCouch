@@ -1,8 +1,8 @@
-import { AutomergeCRDT, getDescendantProp } from 'autocouch'
+import { AutoCouchCRDT, getDescendantProp } from 'autocouch'
 import uuid from 'uuid'
 import Automerge from 'automerge'
 
-export class AutomergeWrapper extends AutomergeCRDT<any> {
+export class AutoCouchWrapper extends AutoCouchCRDT<any> {
 
     static OBJECT_TYPE: string = 'AutomergeWrapper'
 
@@ -10,7 +10,7 @@ export class AutomergeWrapper extends AutomergeCRDT<any> {
         if(doc) {
             super("", "", {}, doc);
         } else {
-            super(AutomergeWrapper.OBJECT_TYPE, uuid.v4(), object);
+            super(AutoCouchWrapper.OBJECT_TYPE, uuid.v4(), object);
         }
     }
 
@@ -19,4 +19,4 @@ export class AutomergeWrapper extends AutomergeCRDT<any> {
     }
 }
 
-export default AutomergeWrapper;
+export default AutoCouchWrapper;
