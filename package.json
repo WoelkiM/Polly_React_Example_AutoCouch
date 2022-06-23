@@ -18,7 +18,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "jasmine": "^3.5.0",
     "jasmine-enzyme": "^7.1.2",
-    "jsdom": "^15.2.1",
+    "jsdom": "^16.5.0",
     "pouchdb": "^7.1.1",
     "react": "^16.10.2",
     "react-dev-utils": "^10.2.1",
